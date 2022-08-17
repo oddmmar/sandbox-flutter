@@ -56,50 +56,57 @@ class _NewTransactionState extends State<NewTransaction> {
     return Card(
       // TextField Card
       elevation: 2,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'Title:'),
-              controller: _titleController,
-              // function takes a variable but it's throw away in this instance '(_)'
-              onSubmitted: (_) => _submitData(),
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Amount:'),
-              controller: _amountController,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-                signed: true,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'Title:'),
+                controller: _titleController,
+                // function takes a variable but it's throw away in this instance '(_)'
+                onSubmitted: (_) => _submitData(),
               ),
-              // function takes a variable but it's throw away in this instance '(_)'
-              onSubmitted: (_) => _submitData(),
-            ),
-            SizedBox(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No date chosen.'
-                          : 'Chosen date: ${DateFormat.yMd().format(_selectedDate!)}',
+              TextField(
+                decoration: const InputDecoration(labelText: 'Amount:'),
+                controller: _amountController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: true,
+                ),
+                // function takes a variable but it's throw away in this instance '(_)'
+                onSubmitted: (_) => _submitData(),
+              ),
+              SizedBox(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No date chosen.'
+                            : 'Chosen date: ${DateFormat.yMd().format(_selectedDate!)}',
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: _presentDatePicker,
-                    child: const Text('Choose date.'),
-                  )
-                ],
+                    TextButton(
+                      onPressed: _presentDatePicker,
+                      child: const Text('Choose date.'),
+                    )
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: _submitData,
-              child: const Text('Submit'),
-            )
-          ],
+              ElevatedButton(
+                onPressed: _submitData,
+                child: const Text('Submit'),
+              )
+            ],
+          ),
         ),
       ),
     );

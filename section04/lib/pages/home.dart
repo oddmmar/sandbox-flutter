@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   // final List<Transaction> _userTransactions = dummyTransactons;
   final List<Transaction> _userTransactions = [];
 
+  bool _showChart = false;
+
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((element) {
       return element.date.isAfter(
@@ -60,6 +62,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       title: const Text('Expenses'),
       actions: [
@@ -69,7 +74,19 @@ class _HomePageState extends State<HomePage> {
       ],
     );
 
-    print('${MediaQuery.of(context).size}');
+    final txWidget = SizedBox(
+      // Transaction list
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.7,
+      child: TransactionList(
+        transactons: _userTransactions,
+        deleteTransaction: _deleteTransaction,
+      ),
+    );
+
+    // print('${MediaQuery.of(context).size}');
 
     return Scaffold(
       appBar: appBar,
@@ -81,27 +98,51 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            // chart
-            height: (MediaQuery.of(context).size.height -
-                    appBar.preferredSize.height -
-                    MediaQuery.of(context).padding.top) *
-                0.3,
-            child: Chart(
-              recentTransactions: _recentTransactions,
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Show Chart'),
+                SizedBox(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      0.2,
+                  child: Switch(
+                      value: _showChart,
+                      onChanged: (val) {
+                        setState(() {
+                          _showChart = val;
+                        });
+                      }),
+                ),
+              ],
             ),
-          ),
-          SizedBox(
-            // Transaction list
-            height: (MediaQuery.of(context).size.height -
-                    appBar.preferredSize.height -
-                    MediaQuery.of(context).padding.top) *
-                0.7,
-            child: TransactionList(
-              transactons: _userTransactions,
-              deleteTransaction: _deleteTransaction,
+          if (!isLandscape)
+            SizedBox(
+              // chart
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
             ),
-          ),
+          if (!isLandscape) txWidget,
+          if (isLandscape)
+            _showChart
+                ? SizedBox(
+                    // chart
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.7,
+                    child: Chart(
+                      recentTransactions: _recentTransactions,
+                    ),
+                  )
+                : txWidget,
         ],
       ),
     );
