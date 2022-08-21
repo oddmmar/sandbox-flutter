@@ -62,79 +62,97 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Widget _buildCupertinoAppBar() {
+    return CupertinoNavigationBar(
+      middle: const Text('Expenses'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            child: const Icon(CupertinoIcons.add),
+            onTap: () => _startAddNewTransaction(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAndroidAppBar() {
+    return AppBar(
+      title: const Text('Expenses'),
+      actions: [
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: const Icon(Icons.add)),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     final appBar = (Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text('Expenses'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  child: const Icon(CupertinoIcons.add),
-                  onTap: () => _startAddNewTransaction(context),
-                ),
-              ],
-            ),
-          )
-        : AppBar(
-            title: const Text('Expenses'),
-            actions: [
-              IconButton(
-                  onPressed: () => _startAddNewTransaction(context),
-                  icon: const Icon(Icons.add)),
-            ],
-          )) as ObstructingPreferredSizeWidget;
+        ? _buildCupertinoAppBar()
+        : _buildAndroidAppBar()) as ObstructingPreferredSizeWidget;
 
     final txWidget = SizedBox(
       // Transaction list
       height: (MediaQuery.of(context).size.height -
               appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top) *
-          0.7,
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom) *
+          0.6,
       child: TransactionList(
         transactons: _userTransactions,
         deleteTransaction: _deleteTransaction,
       ),
     );
 
-    final pageBody = Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (isLandscape)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Show Chart'),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.2,
-                child: Switch.adaptive(
-                    value: _showChart,
-                    onChanged: (val) {
-                      setState(() {
-                        _showChart = val;
-                      });
-                    }),
-              ),
-            ],
-          ),
-        if (!isLandscape)
+    Widget _buildLandscapeContent() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Show Chart'),
           SizedBox(
-            // chart
             height: (MediaQuery.of(context).size.height -
                     appBar.preferredSize.height -
-                    MediaQuery.of(context).padding.top) *
-                0.3,
-            child: Chart(
-              recentTransactions: _recentTransactions,
-            ),
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom) *
+                0.2,
+            child: Switch.adaptive(
+                value: _showChart,
+                onChanged: (val) {
+                  setState(() {
+                    _showChart = val;
+                  });
+                }),
           ),
+        ],
+      );
+    }
+
+    Widget _buildPortraitContent() {
+      return SizedBox(
+        // chart
+        height: (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top -
+                MediaQuery.of(context).padding.bottom) *
+            0.3,
+        child: Chart(
+          recentTransactions: _recentTransactions,
+        ),
+      );
+    }
+
+    final pageBody = Column(
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (isLandscape) _buildLandscapeContent(),
+        if (!isLandscape) _buildPortraitContent(),
         if (!isLandscape) txWidget,
         if (isLandscape)
           _showChart
@@ -154,7 +172,8 @@ class _HomePageState extends State<HomePage> {
 
     return Platform.isIOS
         ? CupertinoPageScaffold(
-            navigationBar: appBar,
+            // ignore: unnecessary_cast
+            navigationBar: appBar as ObstructingPreferredSizeWidget,
             child: pageBody,
           )
         : Scaffold(
