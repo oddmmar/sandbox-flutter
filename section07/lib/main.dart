@@ -1,6 +1,7 @@
 // import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:section07/routes/home_screen.dart';
+import 'package:section07/routes/categories_screen.dart';
+
 // import 'package:flutter/cupertino.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class Meals extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: const CategoriesScreen(),
     );
   }
 }
