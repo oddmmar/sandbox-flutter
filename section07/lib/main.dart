@@ -1,5 +1,6 @@
 // import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:section07/routes/categories_meals_screen.dart';
 import 'package:section07/routes/categories_screen.dart';
 
 // import 'package:flutter/cupertino.dart';
@@ -35,7 +36,12 @@ class Meals extends StatelessWidget {
           bodyText2: const TextStyle(color: Color.fromRGBO(20, 51, 51, 1)),
         ),
       ),
-      home: const CategoriesScreen(),
+      // home: const CategoriesScreen(),
+      initialRoute: '/', // default anyway
+      routes: {
+        '/': (context) => const CategoriesScreen(), // optional
+        CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
+      },
     );
   }
 }
