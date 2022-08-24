@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:section07/routes/categories_meals_screen.dart';
 import 'package:section07/routes/categories_screen.dart';
+import 'package:section07/routes/meal_detail_screen.dart';
 
 // import 'package:flutter/cupertino.dart';
 
@@ -28,6 +29,7 @@ class Meals extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Meals',
       theme: appTheme.copyWith(
         colorScheme: appTheme.colorScheme.copyWith(secondary: Colors.amber),
@@ -41,6 +43,7 @@ class Meals extends StatelessWidget {
       routes: {
         '/': (context) => const CategoriesScreen(), // optional
         CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
+        MealDetailScreen.routeName: (context) => const MealDetailScreen(),
       },
     );
   }
