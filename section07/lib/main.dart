@@ -1,5 +1,6 @@
 // import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:section07/routes/categories_meals_screen.dart';
 import 'package:section07/routes/categories_screen.dart';
 import 'package:section07/routes/meal_detail_screen.dart';
@@ -7,6 +8,12 @@ import 'package:section07/routes/meal_detail_screen.dart';
 // import 'package:flutter/cupertino.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+    ],
+  );
   runApp(Meals());
 }
 
@@ -14,8 +21,7 @@ class Meals extends StatelessWidget {
   Meals({Key? key}) : super(key: key);
 
   final ThemeData appTheme = ThemeData(
-    primarySwatch: Colors.pink,
-    canvasColor: const Color.fromRGBO(255, 254, 229, 1),
+    primarySwatch: Colors.blueGrey,
     fontFamily: 'Raleway',
     textTheme: const TextTheme(
       bodyText1: TextStyle(
@@ -45,6 +51,12 @@ class Meals extends StatelessWidget {
         CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
         MealDetailScreen.routeName: (context) => const MealDetailScreen(),
       },
+      // onGenerateRoute: (settings) {
+      //   print(settings.arguments);
+      // },
+      // onUnknownRoute: (settings) {
+      //   return const CategoriesScreen() as Route<dynamic>;
+      // },
     );
   }
 }

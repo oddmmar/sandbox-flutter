@@ -85,10 +85,13 @@ class MealItem extends StatelessWidget {
                   child: Center(
                     heightFactor: 6,
                     child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                       alignment: Alignment.center,
                       width: double.infinity,
                       height: 40,
-                      color: Colors.black87,
                       child: Text(
                         title,
                         style: const TextStyle(
