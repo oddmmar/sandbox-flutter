@@ -48,7 +48,7 @@ class MealDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 padding: const EdgeInsets.all(10),
-                height: 150,
+                height: 300,
                 width: double.infinity,
                 child: Image.network(
                   selectedMeal.imageUrl,
@@ -74,25 +74,27 @@ class MealDetailScreen extends StatelessWidget {
               ),
               buildSectionTitle(title: 'Steps', context: context),
               buildContainer(
-                  child: ListView.builder(
-                itemBuilder: ((context, index) {
-                  return Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          child: Text('# ${index + 1}'),
+                child: ListView.builder(
+                  itemBuilder: ((context, index) {
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            child: Text('# ${index + 1}'),
+                          ),
+                          title: Text(
+                            selectedMeal.steps[index],
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ),
-                        title: Text(
-                          selectedMeal.steps[index],
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                      const Divider(),
-                    ],
-                  );
-                }),
-                itemCount: selectedMeal.steps.length,
-              ))
+                        const Divider(),
+                      ],
+                    );
+                  }),
+                  itemCount: selectedMeal.steps.length,
+                ),
+              ),
+              const SizedBox(height: 60),
             ],
           ),
         ),
