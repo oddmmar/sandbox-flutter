@@ -56,13 +56,13 @@ class _TesterScreenState extends State<TesterScreen> {
                       //   width: 60,
                       // ),
                       Container(
-                        color: Color.fromARGB(255, 255, 128, 1),
+                        color: const Color.fromARGB(255, 255, 128, 1),
                         height: 60,
                         width: 60,
                       ),
                       Expanded(
                         child: Container(
-                          color: Color.fromARGB(255, 12, 238, 110),
+                          color: const Color.fromARGB(255, 12, 238, 110),
                           height: 60,
                           width: 60,
                         ),

@@ -2,9 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:section07/routes/categories_meals_screen.dart';
-import 'package:section07/routes/categories_screen.dart';
 import 'package:section07/routes/meal_detail_screen.dart';
-import 'package:section07/routes/tester_screen.dart';
+import 'package:section07/routes/tabs_screen.dart';
 
 // import 'package:flutter/cupertino.dart';
 
@@ -48,8 +47,7 @@ class Meals extends StatelessWidget {
       // home: const CategoriesScreen(),
       initialRoute: '/', // default anyway
       routes: {
-        '/': (context) => const TesterScreen(),
-        // '/': (context) => const CategoriesScreen(), // optional
+        '/': (context) => const TabsScreen(),
         CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
         MealDetailScreen.routeName: (context) => const MealDetailScreen(),
       },
