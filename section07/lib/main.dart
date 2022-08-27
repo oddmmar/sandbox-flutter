@@ -22,10 +22,12 @@ class Meals extends StatelessWidget {
 
   final ThemeData appTheme = ThemeData(
     primarySwatch: Colors.blueGrey,
-    fontFamily: 'Raleway',
-    textTheme: const TextTheme(
-      bodyText1: TextStyle(
-        fontFamily: 'RobotCondensed',
+    fontFamily: 'SFPro',
+    textTheme: TextTheme(
+      titleMedium: const TextStyle(
+        fontSize: 17,
+      ),
+      bodyText1: const TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.bold,
       ),
