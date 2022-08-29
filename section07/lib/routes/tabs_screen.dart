@@ -6,7 +6,7 @@ import 'package:section07/widgets/main_drawer.dart';
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/tabs-screen';
+  static const routeName = '/';
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -35,10 +35,9 @@ class _TabsScreenState extends State<TabsScreen> {
       ),
       body: _tabPages[_selectedPageIndex]['page']! as Widget,
       bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectedTab,
         backgroundColor: Theme.of(context).primaryColor,
+        onTap: _selectedTab,
         unselectedItemColor: Colors.white,
-        // use apps color scheme
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         currentIndex: _selectedPageIndex,
         items: const [
@@ -55,35 +54,3 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 }
-
-// tabs withing appbar
-
-// DefaultTabController(
-//       initialIndex: 0,
-//       length: 2,
-//       child: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Meals'),
-//           bottom: const TabBar(
-//             // indicator: BoxDecoration(color: Colors.blueAccent),
-//             indicatorColor: Colors.pink,
-//             tabs: [
-//               Tab(
-//                 icon: Icon(Icons.category),
-//                 text: 'Categories',
-//               ),
-//               Tab(
-//                 icon: Icon(Icons.star),
-//                 text: 'Favourites',
-//               ),
-//             ],
-//           ),
-//         ),
-//         body: const TabBarView(
-//           children: [
-//             CategoriesScreen(),
-//             FavouritesScreen(),
-//           ],
-//         ),
-//       ),
-//     );

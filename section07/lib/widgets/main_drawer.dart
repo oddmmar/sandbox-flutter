@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:section07/routes/filter_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
 
-  Widget buildListTile({required String title, required IconData icon}) {
+  Widget buildListTile(
+      {required String title,
+      required IconData icon,
+      required Function onTapHandler}) {
     return ListTile(
       leading: Icon(icon),
       title: Text(
         title,
         style: const TextStyle(
-            fontFamily: 'RobotoCondensed',
+            // fontFamily: 'RobotoCondensed',
             fontSize: 24,
             fontWeight: FontWeight.bold),
       ),
-      onTap: () {},
+      onTap: (() => onTapHandler()),
     );
   }
 
@@ -26,7 +30,7 @@ class MainDrawer extends StatelessWidget {
             height: 106,
             width: double.infinity,
             padding: const EdgeInsets.all(20),
-            color: Theme.of(context).colorScheme.secondary,
+            color: Colors.grey.shade800,
             alignment: Alignment.centerLeft,
             child: Text(
               'Let\'s Cook',
@@ -38,9 +42,20 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          buildListTile(title: 'Meals', icon: Icons.restaurant),
+          buildListTile(
+              title: 'Meals',
+              icon: Icons.restaurant,
+              onTapHandler: () {
+                Navigator.of(context).pushReplacementNamed('/');
+              }),
           const SizedBox(height: 10),
-          buildListTile(title: 'Favourite', icon: Icons.favorite),
+          buildListTile(
+              title: 'Favourites',
+              icon: Icons.favorite,
+              onTapHandler: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(FilterScreen.routeName);
+              }),
         ],
       ),
     );
