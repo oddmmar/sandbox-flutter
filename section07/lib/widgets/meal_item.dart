@@ -54,7 +54,7 @@ class MealItem extends StatelessWidget {
       arguments: id,
     )
         .then((value) {
-      print(value);
+      // print(value);
     });
   }
 
