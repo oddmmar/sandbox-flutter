@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:section07/routes/filter_screen.dart';
+import 'package:section07/routes/filters_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class MainDrawer extends StatelessWidget {
               }),
           const SizedBox(height: 10),
           buildListTile(
-              title: 'Favourites',
+              title: 'Filters',
               icon: Icons.favorite,
               onTapHandler: () {
                 Navigator.of(context)

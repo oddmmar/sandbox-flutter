@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:section07/dummy_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({Key? key}) : super(key: key);
+  const MealDetailScreen(
+      {Key? key, required this.toggleFave, required this.isMealFave})
+      : super(key: key);
+
   static const routeName = '/meal-detail';
+  final Function toggleFave;
+  final Function isMealFave;
 
   Widget buildSectionTitle({required String title, BuildContext? context}) {
     return SizedBox(
@@ -100,10 +105,11 @@ class MealDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          Navigator.of(context).pop(mealId);
-        }),
-        child: const Icon(Icons.delete),
+        onPressed: () => toggleFave(mealId),
+        // onPressed: (() {
+        //   Navigator.of(context).pop(mealId);
+        // }),
+        child: Icon(isMealFave(mealId) ? Icons.star : Icons.star_border),
       ),
     );
   }
