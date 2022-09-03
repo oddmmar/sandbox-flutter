@@ -5,6 +5,8 @@ import 'package:section08/widgets/product_item.dart';
 class ProductOverviewScreen extends StatelessWidget {
   ProductOverviewScreen({Key? key}) : super(key: key);
 
+  static const routeName = '/product-overview';
+
   final loadedProducts = dummyProducts;
 
   @override
