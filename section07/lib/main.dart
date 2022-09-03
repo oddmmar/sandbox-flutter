@@ -58,7 +58,7 @@ class _MealsState extends State<Meals> {
   }
 
   void _toggleFaves({required String mealId}) {
-    print('toggling');
+    // print('toggling');
     final existingIndex =
         _faveMeals.indexWhere((element) => element.id == mealId);
     if (existingIndex >= 0) {
@@ -74,9 +74,7 @@ class _MealsState extends State<Meals> {
   }
 
   bool _isMealFave(String id) {
-    final bool testCond = _faveMeals.any((element) => element.id == id);
-    print(testCond);
-    return testCond;
+    return _faveMeals.any((element) => element.id == id);
   }
 
   final ThemeData appTheme = ThemeData(
