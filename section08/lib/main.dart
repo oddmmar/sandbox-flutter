@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:section08/routes/product_detail_screen.dart';
 import 'package:section08/routes/products_overview_screen.dart';
+import 'package:section08/providers/products.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyShop());
@@ -16,16 +18,23 @@ class MyShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appTheme.copyWith(
-        colorScheme:
-            appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
-      ),
-      home: ProductOverviewScreen(),
-      routes: {
-        ProductOverviewScreen.routeName: ((context) => ProductOverviewScreen()),
-        ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
+    return ChangeNotifierProvider(
+      create: (context) {
+        return Products();
       },
+      child: MaterialApp(
+        theme: appTheme.copyWith(
+          colorScheme:
+              appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
+        ),
+        home: const ProductOverviewScreen(),
+        routes: {
+          ProductOverviewScreen.routeName: ((context) =>
+              const ProductOverviewScreen()),
+          ProductDetailScreen.routeName: (context) =>
+              const ProductDetailScreen(),
+        },
+      ),
     );
   }
 }
