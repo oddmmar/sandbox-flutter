@@ -1,4 +1,4 @@
-import 'package:section08/models/product.dart';
+import 'package:section08/providers/product.dart';
 
 final List<Product> dummyProducts = [
   Product(

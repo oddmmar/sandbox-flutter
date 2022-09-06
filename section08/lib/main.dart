@@ -19,9 +19,7 @@ class MyShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) {
-        return Products();
-      },
+      create: (context) => Products(),
       child: MaterialApp(
         theme: appTheme.copyWith(
           colorScheme:
