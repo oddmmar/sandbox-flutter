@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-
 import 'package:section08/providers/products.dart';
 import 'package:section08/widgets/product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
-  const ProductsGrid({Key? key}) : super(key: key);
+  const ProductsGrid({Key? key, required this.productsFilter}) : super(key: key);
+  final bool productsFilter;
 
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    final products = productsData.items;
+    final products = productsFilter ? productsData.favouriteItems : productsData.items;
 
     return GridView.builder(
       padding: const EdgeInsets.all(10),

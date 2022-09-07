@@ -22,15 +22,12 @@ class MyShop extends StatelessWidget {
       create: (context) => Products(),
       child: MaterialApp(
         theme: appTheme.copyWith(
-          colorScheme:
-              appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
+          colorScheme: appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
         ),
         home: const ProductOverviewScreen(),
         routes: {
-          ProductOverviewScreen.routeName: ((context) =>
-              const ProductOverviewScreen()),
-          ProductDetailScreen.routeName: (context) =>
-              const ProductDetailScreen(),
+          ProductOverviewScreen.routeName: ((context) => const ProductOverviewScreen()),
+          ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
         },
       ),
     );
