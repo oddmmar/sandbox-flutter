@@ -3,16 +3,19 @@ import 'package:section08/models/cart_item.dart';
 
 class Cart with ChangeNotifier {
   // Cart({Key? key});
+  Map<String, CartItem>? items = {};
 
-  Map<String, CartItem>? _items;
+  Map<String, CartItem> get elements {
+    return {...items!};
+  }
 
-  Map<String, CartItem> get items {
-    return {..._items!};
+  int get itemCount {
+    return items!.length;
   }
 
   void addItem({required String productId, required double price, required String title}) {
-    if (_items!.containsKey(productId)) {
-      _items!.update(
+    if (items!.containsKey(productId)) {
+      items!.update(
         productId,
         (value) => CartItem(
           id: value.id,
@@ -22,7 +25,7 @@ class Cart with ChangeNotifier {
         ),
       );
     } else {
-      _items!.putIfAbsent(
+      items!.putIfAbsent(
         productId,
         () => CartItem(
           id: DateTime.now().toString(),
@@ -32,5 +35,6 @@ class Cart with ChangeNotifier {
         ),
       );
     }
+    notifyListeners();
   }
 }
