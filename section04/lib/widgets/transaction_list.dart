@@ -3,9 +3,7 @@ import 'package:section04/widgets/transaction_item.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  const TransactionList(
-      {Key? key, required this.transactons, required this.deleteTransaction})
-      : super(key: key);
+  const TransactionList({Key? key, required this.transactons, required this.deleteTransaction}) : super(key: key);
 
   final List<Transaction> transactons;
   final Function deleteTransaction;
@@ -33,13 +31,13 @@ class TransactionList extends StatelessWidget {
               ],
             );
           })
-        : ListView.builder(
-            itemCount: transactons.length,
-            itemBuilder: (context, index) {
-              return TransactionItem(
-                  transacton: transactons[index],
-                  deleteTransaction: deleteTransaction);
-            },
+        : Expanded(
+            child: ListView.builder(
+              itemCount: transactons.length,
+              itemBuilder: (context, index) {
+                return TransactionItem(transacton: transactons[index], deleteTransaction: deleteTransaction);
+              },
+            ),
           );
   }
 }

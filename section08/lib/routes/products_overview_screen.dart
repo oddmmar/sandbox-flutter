@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:section08/routes/cart_screen.dart';
 import 'package:section08/widgets/badge.dart';
 import 'package:section08/widgets/products_grid.dart';
 import 'package:section08/providers/cart.dart';
@@ -46,8 +47,14 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             icon: const Icon(Icons.more_vert),
             itemBuilder: (_) {
               return [
-                const PopupMenuItem(value: FilterOptions.favourites, child: Text('Only Favourites')),
-                const PopupMenuItem(value: FilterOptions.all, child: Text('Show All')),
+                const PopupMenuItem(
+                  value: FilterOptions.favourites,
+                  child: Text('Only Favourites'),
+                ),
+                const PopupMenuItem(
+                  value: FilterOptions.all,
+                  child: Text('Show All'),
+                ),
               ];
             },
           ),
@@ -58,7 +65,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             ),
             child: IconButton(
               icon: const Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, CartScreen.routeName);
+              },
             ),
           ),
         ],
