@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:section08/providers/cart.dart';
+import 'package:section08/providers/orders.dart';
 import 'package:section08/widgets/listview_cart_item.dart';
 
 class CartScreen extends StatelessWidget {
@@ -37,7 +38,13 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                        cart.elements.values.toList(),
+                        cart.totalAmount,
+                      );
+                      cart.clear();
+                    },
                     child: const Text('Order Now'),
                   ),
                 ],
@@ -49,6 +56,7 @@ class CartScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListViewCartItem(
                   id: cart.elements.values.toList()[index].id,
+                  productId: cart.elements.keys.toList()[index],
                   price: cart.elements.values.toList()[index].price,
                   quantity: cart.elements.values.toList()[index].quantity,
                   title: cart.elements.values.toList()[index].title,

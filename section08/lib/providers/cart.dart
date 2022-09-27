@@ -21,6 +21,11 @@ class Cart with ChangeNotifier {
     return total;
   }
 
+  void removeItem({String? id}) {
+    _items!.remove(id);
+    notifyListeners();
+  }
+
   void addItem({required String productId, required double price, required String title}) {
     if (_items!.containsKey(productId)) {
       _items!.update(
@@ -43,6 +48,11 @@ class Cart with ChangeNotifier {
         ),
       );
     }
+    notifyListeners();
+  }
+
+  void clear() {
+    _items = {};
     notifyListeners();
   }
 }
