@@ -34,7 +34,7 @@ class CartScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     child: Chip(
-                      label: Text('\$${cart.totalAmount}'),
+                      label: Text('\$${cart.totalAmount.toStringAsFixed(2)}'),
                     ),
                   ),
                   ElevatedButton(
