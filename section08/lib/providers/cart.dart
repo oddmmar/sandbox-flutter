@@ -3,32 +3,52 @@ import 'package:section08/models/cart_item.dart';
 
 class Cart with ChangeNotifier {
   // Cart({Key? key});
-  Map<String, CartItem>? _items = {};
+  late Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get elements {
-    return {...?_items};
+    return {..._items};
   }
 
   int get itemCount {
-    return _items!.length;
+    return _items.length;
   }
 
   double get totalAmount {
     var total = 0.0;
-    _items!.forEach((key, cartItem) {
+    _items.forEach((key, cartItem) {
       total += cartItem.price * cartItem.quantity;
     });
     return total;
   }
 
   void removeItem({String? id}) {
-    _items!.remove(id);
+    _items.remove(id);
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      return;
+    }
+    if (_items[productId]!.quantity > 1) {
+      _items.update(
+        productId,
+        (value) => CartItem(
+          id: value.id,
+          price: value.price,
+          quantity: value.quantity - 1,
+          title: value.title,
+        ),
+      );
+    } else {
+      _items.remove(productId);
+    }
     notifyListeners();
   }
 
   void addItem({required String productId, required double price, required String title}) {
-    if (_items!.containsKey(productId)) {
-      _items!.update(
+    if (_items.containsKey(productId)) {
+      _items.update(
         productId,
         (value) => CartItem(
           id: value.id,
@@ -38,7 +58,7 @@ class Cart with ChangeNotifier {
         ),
       );
     } else {
-      _items!.putIfAbsent(
+      _items.putIfAbsent(
         productId,
         () => CartItem(
           id: DateTime.now().toString(),

@@ -27,8 +27,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     // careful not manage changes for just one widget in a global area as the
     // data state will persist through all the screens
 
-    // final productsContainer = Provider.of<Products>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('The Shop'),
