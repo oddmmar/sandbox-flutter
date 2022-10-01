@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:section08/providers/products.dart';
+import 'package:section08/routes/edit_product_screen.dart';
 import 'package:section08/widgets/app_drawer.dart';
 import 'package:section08/widgets/user_product_item.dart';
 
@@ -16,7 +17,7 @@ class UserProductsScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () => Navigator.of(context).pushNamed(EditProductScreen.routeName),
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
