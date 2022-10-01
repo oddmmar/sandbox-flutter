@@ -12,16 +12,24 @@ class Product with ChangeNotifier {
   });
 
   final String id;
-  final String title;
-  final String description;
-  final String imageUrl;
-  final double price;
+  late final String title;
+  late final String description;
+  late final String imageUrl;
+  late final double price;
   bool isFavourite;
 
   void toggleFavouriteStatus() {
     isFavourite = !isFavourite;
     notifyListeners();
   }
+}
+
+class TempProduct {
+  String id = '';
+  late String title;
+  late String description;
+  late String imageUrl;
+  late double price;
 }
 
 // TODO: Check out video 198 about listening to these changes.
