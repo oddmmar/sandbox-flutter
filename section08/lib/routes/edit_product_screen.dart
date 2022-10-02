@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:section08/providers/product.dart';
 import 'package:section08/providers/products.dart';
 
+//  https://imagemagick.org/image/wizard.png
+
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({Key? key}) : super(key: key);
   static const routeName = '/edit-product';
@@ -17,7 +19,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlController = TextEditingController();
   final _imageFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
-  var _editedProduct = Product(id: '', title: '', description: '', price: 0.0, imageUrl: '');
+  var _editedProduct = Product(id: null, title: null, description: null, price: null, imageUrl: null);
 
   @override
   void initState() {
@@ -40,10 +42,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       if (productId != '') {
         _editedProduct = Provider.of<Products>(context).findById(id: productId);
         _initValues = {
-          'title': _editedProduct.title,
-          'description': _editedProduct.description,
+          'title': _editedProduct.title!,
+          'description': _editedProduct.description!,
           'price': _editedProduct.price.toString(),
-          'imageUrl': _editedProduct.imageUrl,
+          'imageUrl': _editedProduct.imageUrl!,
         };
       }
     }
@@ -73,8 +75,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
-    if (_editedProduct.id != '') {
-      Provider.of<Products>(context, listen: false).updateProduct(id: _editedProduct.id, newProduct: _editedProduct);
+    if (_editedProduct.id != null) {
+      Provider.of<Products>(context, listen: false).updateProduct(id: _editedProduct.id!, newProduct: _editedProduct);
     } else {
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }
@@ -148,7 +150,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   keyboardType: TextInputType.multiline,
                   focusNode: _descriptionFocusNode,
                   onSaved: (newValue) {
-                    _editedProduct.description = newValue!;
+                    _editedProduct.description = newValue;
                   },
                 ),
                 Row(
@@ -175,7 +177,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ),
                     Expanded(
                       child: TextFormField(
-                        // initialValue: _initValues['imageUrl'],
                         decoration: const InputDecoration(labelText: 'Image URL'),
                         keyboardType: TextInputType.url,
                         textInputAction: TextInputAction.done,
@@ -185,6 +186,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         onSaved: (newValue) {
                           _editedProduct.imageUrl = newValue!;
                         },
+                        // initialValue: _initValues['imageUrl'],
                       ),
                     ),
                   ],
@@ -195,3 +197,5 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 }
+
+// FIXME: image URL initial value on edit

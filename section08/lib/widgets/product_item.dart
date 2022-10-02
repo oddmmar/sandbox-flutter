@@ -29,7 +29,7 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             onPressed: () {
-              cart.addItem(productId: product.id, price: product.price, title: product.title);
+              cart.addItem(productId: product.id!, price: product.price!, title: product.title!);
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -37,7 +37,7 @@ class ProductItem extends StatelessWidget {
                   // duration: const Duration(milliseconds: 100),
                   action: SnackBarAction(
                     label: 'UNDO',
-                    onPressed: () => cart.removeSingleItem(product.id),
+                    onPressed: () => cart.removeSingleItem(product.id!),
                   ),
                 ),
               );
@@ -47,7 +47,7 @@ class ProductItem extends StatelessWidget {
           ),
           backgroundColor: Colors.black87,
           title: Text(
-            product.title,
+            product.title!,
             textAlign: TextAlign.center,
           ),
         ),
@@ -56,7 +56,7 @@ class ProductItem extends StatelessWidget {
             Navigator.of(context).pushNamed(ProductDetailScreen.routeName, arguments: product.id);
           }),
           child: Image.network(
-            product.imageUrl,
+            product.imageUrl!,
             fit: BoxFit.cover,
           ),
         ),

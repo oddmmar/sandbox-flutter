@@ -17,7 +17,7 @@ class UserProductsScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed(EditProductScreen.routeName),
+        onPressed: () => Navigator.of(context).pushNamed(EditProductScreen.routeName, arguments: ''),
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
@@ -33,9 +33,9 @@ class UserProductsScreen extends StatelessWidget {
             child: Column(
               children: [
                 UserProductItem(
-                  id: productsData[index].id,
-                  title: productsData[index].title,
-                  imageUrl: productsData[index].imageUrl,
+                  id: productsData[index].id!,
+                  title: productsData[index].title!,
+                  imageUrl: productsData[index].imageUrl!,
                 ),
                 const Divider(),
               ],
