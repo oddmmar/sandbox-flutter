@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:section08/dummy_data.dart';
 import 'package:section08/providers/product.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Products with ChangeNotifier {
   // ignore: prefer_final_fields
@@ -39,14 +41,30 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    final newProduct = Product(
-      id: DateTime.now().toString(),
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-    );
-    _items.insert(0, newProduct);
+    final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json');
+    http
+        .post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavourite': product.isFavourite,
+      }),
+    )
+        .then((response) {
+      // print(json.decode(response.body));
+      final newProduct = Product(
+        id: json.decode(response.body)['name'],
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      );
+      _items.insert(0, newProduct);
+    });
+
     notifyListeners();
   }
 
