@@ -119,6 +119,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_initValues['imageUrl']);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Product'),
@@ -215,11 +217,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              // initialValue: _initValues['imageUrl']!,
+                              // FIXME: will not accept current image url as initial value
+                              initialValue: _initValues['imageUrl']!,
                               decoration: const InputDecoration(labelText: 'Image URL'),
                               keyboardType: TextInputType.url,
                               textInputAction: TextInputAction.done,
-                              controller: _imageUrlController,
+                              // controller: _imageUrlController,
                               focusNode: _imageFocusNode,
                               onFieldSubmitted: (value) => _saveForm(),
                               onSaved: (newValue) {
@@ -235,5 +238,3 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 }
-
-// FIXME: image URL initial value on edit

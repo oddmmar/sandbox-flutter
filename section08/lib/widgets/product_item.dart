@@ -19,7 +19,15 @@ class ProductItem extends StatelessWidget {
           leading: Consumer<Product>(
             builder: (context, product, child) => IconButton(
               onPressed: () {
-                product.toggleFavouriteStatus();
+                try {
+                  product.toggleFavouriteStatus();
+                } catch (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(error.toString()),
+                    ),
+                  );
+                }
               },
               icon: Icon(
                 product.isFavourite ? Icons.favorite : Icons.favorite_border,
