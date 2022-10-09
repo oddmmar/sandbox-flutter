@@ -52,6 +52,7 @@ class Products with ChangeNotifier {
               'isFavourite': product.isFavourite,
             }))
         .then((response) {
+      //similar to defer in Go, registered but only executes after everything else
       // print(json.decode(response.body));
       final newProduct = Product(
         id: json.decode(response.body)['name'],
@@ -61,6 +62,9 @@ class Products with ChangeNotifier {
         imageUrl: product.imageUrl,
       );
       _items.insert(0, newProduct);
+    }).catchError((error) {
+      print(error);
+      throw (error);
     });
     notifyListeners();
   }

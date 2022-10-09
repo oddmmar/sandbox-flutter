@@ -90,11 +90,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false)
-          .addProduct(
-        _editedProduct,
-      )
-          .then((_) {
+      Provider.of<Products>(context, listen: false).addProduct(_editedProduct).catchError((error) {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('An error occurred'),
+            content: Text(error.toString()),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        );
+      }).then((_) {
         setState(() {
           _isLoading = false;
         });
