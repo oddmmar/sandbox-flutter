@@ -81,14 +81,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false).updateProduct(
+      await Provider.of<Products>(context, listen: false).updateProduct(
         id: _editedProduct.id!,
         newProduct: _editedProduct,
       );
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      // Navigator.of(context).pop();
     } else {
       try {
         Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
@@ -108,12 +108,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
+      setState(() {
+        _isLoading = false;
+      });
+      if (!mounted) return;
+      Navigator.of(context).pop();
     }
   }
 
@@ -215,6 +215,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           ),
                           Expanded(
                             child: TextFormField(
+                              // initialValue: _initValues['imageUrl']!,
                               decoration: const InputDecoration(labelText: 'Image URL'),
                               keyboardType: TextInputType.url,
                               textInputAction: TextInputAction.done,
@@ -224,7 +225,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               onSaved: (newValue) {
                                 _editedProduct.imageUrl = newValue!;
                               },
-                              // initialValue: _initValues['imageUrl'],
                             ),
                           ),
                         ],

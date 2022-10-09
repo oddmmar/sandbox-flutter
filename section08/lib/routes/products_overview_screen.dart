@@ -23,6 +23,11 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   bool _showFavouriteOnly = false;
   bool _didLoad = false;
 
+  Future<void> _forceRefresh() async {
+    _didLoad = false;
+    didChangeDependencies();
+  }
+
   @override
   void initState() {
     /* HACK: remember of(context) operations are not available before full initialisation.  */
@@ -36,7 +41,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   void didChangeDependencies() {
     // this method runs multiple times, this hack is to stop multiple executions.
     if (!_didLoad) {
-      Provider.of<Products>(context).fetchAnsSetProducts();
+      setState(() {
+        Provider.of<Products>(context, listen: false).fetchAnsSetProducts();
+      });
     }
     _didLoad = true;
     super.didChangeDependencies();
@@ -92,7 +99,10 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         ],
       ),
       drawer: const AppDrawer(),
-      body: ProductsGrid(productsFilter: _showFavouriteOnly),
+      body: RefreshIndicator(
+        onRefresh: () => _forceRefresh(),
+        child: ProductsGrid(productsFilter: _showFavouriteOnly),
+      ),
     );
   }
 }

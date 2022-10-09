@@ -9,6 +9,10 @@ class UserProductsScreen extends StatelessWidget {
   const UserProductsScreen({Key? key}) : super(key: key);
   static const routeName = '/user-products';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(context, listen: false).fetchAnsSetProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context).items;
@@ -23,22 +27,25 @@ class UserProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Products'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: productsData.length,
-          itemBuilder: (_, index) => ChangeNotifierProvider.value(
-            value: productsData[index],
-            // builder: (),
-            child: Column(
-              children: [
-                UserProductItem(
-                  id: productsData[index].id!,
-                  title: productsData[index].title!,
-                  imageUrl: productsData[index].imageUrl!,
-                ),
-                const Divider(),
-              ],
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProducts(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: productsData.length,
+            itemBuilder: (_, index) => ChangeNotifierProvider.value(
+              value: productsData[index],
+              // builder: (),
+              child: Column(
+                children: [
+                  UserProductItem(
+                    id: productsData[index].id!,
+                    title: productsData[index].title!,
+                    imageUrl: productsData[index].imageUrl!,
+                  ),
+                  const Divider(),
+                ],
+              ),
             ),
           ),
         ),
