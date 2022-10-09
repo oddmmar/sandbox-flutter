@@ -40,20 +40,28 @@ class Products with ChangeNotifier {
     });
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> fetchAnsSetProducts() async {
     final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json');
-    return http
-        .post(url,
-            body: json.encode({
-              'title': product.title,
-              'description': product.description,
-              'imageUrl': product.imageUrl,
-              'price': product.price,
-              'isFavourite': product.isFavourite,
-            }))
-        .then((response) {
-      //similar to defer in Go, registered but only executes after everything else
-      // print(json.decode(response.body));
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> addProduct(Product product) async {
+    final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json');
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isFavourite': product.isFavourite,
+          }));
+
       final newProduct = Product(
         id: json.decode(response.body)['name'],
         title: product.title,
@@ -62,10 +70,11 @@ class Products with ChangeNotifier {
         imageUrl: product.imageUrl,
       );
       _items.insert(0, newProduct);
-    }).catchError((error) {
+    } catch (error) {
       print(error);
-      throw (error);
-    });
+      rethrow;
+    }
+
     notifyListeners();
   }
 
