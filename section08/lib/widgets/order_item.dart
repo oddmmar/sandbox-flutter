@@ -26,7 +26,7 @@ class _OrderItemState extends State<OrderItem> {
         children: [
           ListTile(
             title: Text('\$${widget.order.amount}'),
-            subtitle: Text(DateFormat('dd/MM/yyyy - hh:mm').format(widget.order.dateTime)),
+            subtitle: Text(DateFormat('dd/MM/yyyy - hh:mm').format(widget.order.dateTime!)),
             trailing: IconButton(
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
               onPressed: () {
@@ -38,18 +38,18 @@ class _OrderItemState extends State<OrderItem> {
           ),
           if (_expanded)
             SizedBox(
-              height: min(widget.order.products.length * 20.0 + 15, 100.0),
+              height: min(widget.order.products!.length * 20.0 + 15, 100.0),
               child: ListView.builder(
-                itemCount: widget.order.products.length,
+                itemCount: widget.order.products!.length,
                 itemBuilder: (context, index) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.order.products[index].title,
+                        widget.order.products![index].title,
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Text('\$${widget.order.products[index].quantity} x \$${widget.order.products[index].price}'),
+                      Text('\$${widget.order.products![index].quantity} x \$${widget.order.products![index].price}'),
                     ],
                   );
                 },
