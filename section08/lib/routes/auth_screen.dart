@@ -85,7 +85,7 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.login;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -121,6 +121,76 @@ class _AuthCardState extends State<AuthCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final deviceSize = MediaQuery.of(context).size;
+
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 8.0,
+      child: Container(
+        height: _authMode == AuthMode.signup ? 320 : 260,
+        constraints: BoxConstraints(minHeight: _authMode == AuthMode.signup ? 320 : 260),
+        width: deviceSize.width * 0.75,
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'E-Mail'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value!.isEmpty || !value.contains('@')) {
+                        return 'Invalid email!';
+                      }
+                    },
+                    onSaved: (newValue) {
+                      _authData['email'] = newValue!;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 5) {
+                        return 'Password is too short!';
+                      }
+                    },
+                    onSaved: (newValue) {
+                      _authData['password'] = newValue!;
+                    },
+                  ),
+                  if (_authMode == AuthMode.signup)
+                    TextFormField(
+                      enabled: _authMode == AuthMode.signup,
+                      decoration: const InputDecoration(labelText: 'Confirm Password'),
+                      obscureText: true,
+                      validator: _authMode == AuthMode.signup
+                          ? (value) {
+                              if (value != _passwordController.text) {
+                                return 'Password does not match';
+                              }
+                            }
+                          : null,
+                    ),
+                  const SizedBox(height: 20),
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _submit,
+                          child: Text(_authMode == AuthMode.login ? 'LOGIN' : 'SIGNUP'),
+                        ),
+                  TextButton(
+                    onPressed: _switchAuthMode,
+                    child: Text('${_authMode == AuthMode.login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                  )
+                ],
+              ),
+            )),
+      ),
+    );
   }
 }
