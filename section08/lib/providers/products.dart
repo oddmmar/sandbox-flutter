@@ -7,12 +7,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Products with ChangeNotifier {
-  Products({this.authToken, required this.items});
-  // ignore: prefer_final_fields
-  // bool _showFavouriteOnly = false;
-  final String? authToken;
+  Products({
+    this.authToken,
+    required this.items,
+    this.userId,
+  });
 
-  // ignore: prefer_final_fields
+  final String? authToken;
+  final String? userId;
   List<Product>? items = [];
 
   List<Product> get favouriteItems {
@@ -45,12 +47,16 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAnsSetProducts() async {
-    final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json?auth=$authToken');
+    var url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
       if (extractedData.isEmpty) return;
+      // fetch favourites
+      url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/userFavourites/$userId.json?auth=$authToken');
+      final favouriteResponse = await http.get(url);
+      final favouriteData = json.decode(favouriteResponse.body);
 
       final List<Product> loadedProducts = [];
       extractedData.forEach(
@@ -60,7 +66,8 @@ class Products with ChangeNotifier {
               id: prodId,
               title: prodData['title'],
               description: prodData['description'],
-              isFavourite: prodData['isFavourite'],
+              // isFavourite: prodData['isFavourite'],
+              isFavourite: favouriteData == null ? false : favouriteData[prodId] ?? false,
               price: prodData['price'],
               imageUrl: prodData['imageUrl'],
             ),
@@ -82,7 +89,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavourite': product.isFavourite,
+            // 'isFavourite': product.isFavourite,
           }));
 
       final newProduct = Product(

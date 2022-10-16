@@ -25,17 +25,17 @@ class Product with ChangeNotifier {
     // throw const HttpException('Server error. Status unchanged.');
   }
 
-  Future<void> toggleFavouriteStatus({String? authToken}) async {
+  Future<void> toggleFavouriteStatus({String? authToken, String? userId}) async {
     final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
-    final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
+    final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/userFavourites/$userId/$id.json?auth=$authToken');
     try {
-      final response = await http.patch(
+      final response = await http.put(
         url,
-        body: json.encode({
-          'isFavourite': isFavourite,
-        }),
+        body: json.encode(
+          isFavourite,
+        ),
       );
       if (response.statusCode >= 400) {
         _setFaveStatus(oldStatus);

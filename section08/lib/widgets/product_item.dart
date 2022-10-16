@@ -13,7 +13,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
-    final authData = Provider.of<Auth>(context, listen: false).token;
+    final authData = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -23,7 +23,10 @@ class ProductItem extends StatelessWidget {
             builder: (context, product, child) => IconButton(
               onPressed: () {
                 try {
-                  product.toggleFavouriteStatus(authToken: authData);
+                  product.toggleFavouriteStatus(
+                    authToken: authData.token,
+                    userId: authData.userId,
+                  );
                 } catch (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
