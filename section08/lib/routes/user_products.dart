@@ -32,7 +32,7 @@ class UserProductsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
-            itemCount: productsData.length,
+            itemCount: productsData!.length,
             itemBuilder: (_, index) => ChangeNotifierProvider.value(
               value: productsData[index],
               // builder: (),

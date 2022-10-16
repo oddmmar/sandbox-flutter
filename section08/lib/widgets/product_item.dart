@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:section08/providers/auth.dart';
 import 'package:section08/providers/cart.dart';
 import 'package:section08/providers/product.dart';
+import 'package:section08/providers/products.dart';
 import 'package:section08/routes/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +13,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false).token;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -20,7 +23,7 @@ class ProductItem extends StatelessWidget {
             builder: (context, product, child) => IconButton(
               onPressed: () {
                 try {
-                  product.toggleFavouriteStatus();
+                  product.toggleFavouriteStatus(authToken: authData);
                 } catch (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

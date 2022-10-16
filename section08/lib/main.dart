@@ -28,26 +28,40 @@ class MyShop extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Products()),
-        ChangeNotifierProvider(create: (context) => Cart()),
-        ChangeNotifierProvider(create: (context) => Orders()),
-        ChangeNotifierProvider(create: (context) => Auth()),
-      ],
-      child: MaterialApp(
-        theme: appTheme.copyWith(
-          colorScheme: appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
+        ChangeNotifierProvider(create: (context) => Auth()), // import that this comes first
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (context) => Products(items: []),
+          update: (context, auth, previous) => Products(
+            authToken: auth.token,
+            items: previous!.items == null ? [] : previous.items,
+          ),
         ),
-        home: const AuthScreen(),
-        // home: const EditProductScreen(),
-        routes: {
-          ProductOverviewScreen.routeName: ((context) => const ProductOverviewScreen()),
-          ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
-          CartScreen.routeName: (context) => const CartScreen(),
-          OrdersScreen.routeName: (context) => const OrdersScreen(),
-          UserProductsScreen.routeName: (context) => const UserProductsScreen(),
-          EditProductScreen.routeName: (context) => const EditProductScreen(),
-          AuthScreen.routeName: (context) => const AuthScreen(),
-        },
+        ChangeNotifierProvider(create: (context) => Cart()),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (context) => Orders(orders: []),
+          update: (context, auth, previous) => Orders(
+            authToken: auth.token,
+            orders: previous!.orders == null ? [] : previous.orders,
+          ),
+        ),
+      ],
+      child: Consumer<Auth>(
+        builder: (context, auth, _) => MaterialApp(
+          theme: appTheme.copyWith(
+            colorScheme: appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
+          ),
+          home: auth.isAuth ? const ProductOverviewScreen() : const AuthScreen(),
+          // home: const EditProductScreen(),
+          routes: {
+            ProductOverviewScreen.routeName: ((context) => const ProductOverviewScreen()),
+            ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
+            CartScreen.routeName: (context) => const CartScreen(),
+            OrdersScreen.routeName: (context) => const OrdersScreen(),
+            UserProductsScreen.routeName: (context) => const UserProductsScreen(),
+            EditProductScreen.routeName: (context) => const EditProductScreen(),
+            AuthScreen.routeName: (context) => const AuthScreen(),
+          },
+        ),
       ),
     );
   }
