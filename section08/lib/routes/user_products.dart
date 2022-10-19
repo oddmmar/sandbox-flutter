@@ -10,12 +10,12 @@ class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<Products>(context, listen: false).fetchAnsSetProducts();
+    await Provider.of<Products>(context, listen: false).fetchAnsSetProducts(filterByUser: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context).items;
+    // final productsData = Provider.of<Products>(context).items;
 
     return Scaffold(
       drawer: const AppDrawer(),
@@ -27,28 +27,35 @@ class UserProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Products'),
       ),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshProducts(context),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-            itemCount: productsData!.length,
-            itemBuilder: (_, index) => ChangeNotifierProvider.value(
-              value: productsData[index],
-              // builder: (),
-              child: Column(
-                children: [
-                  UserProductItem(
-                    id: productsData[index].id!,
-                    title: productsData[index].title!,
-                    imageUrl: productsData[index].imageUrl!,
+      body: FutureBuilder(
+        future: _refreshProducts(context),
+        builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+            ? const Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: () => _refreshProducts(context),
+                child: Consumer<Products>(
+                  builder: (context, productsData, _) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      itemCount: productsData.items!.length,
+                      itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                        value: productsData.items![index],
+                        // builder: (),
+                        child: Column(
+                          children: [
+                            UserProductItem(
+                              id: productsData.items![index].id!,
+                              title: productsData.items![index].title!,
+                              imageUrl: productsData.items![index].imageUrl!,
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  const Divider(),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

@@ -46,8 +46,9 @@ class Products with ChangeNotifier {
     });
   }
 
-  Future<void> fetchAnsSetProducts() async {
-    var url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json?auth=$authToken');
+  Future<void> fetchAnsSetProducts({bool filterByUser = false}) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -83,14 +84,19 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     final url = Uri.parse('https://fluttershopapp-6901d-default-rtdb.firebaseio.com/products.json?auth=$authToken');
     try {
-      final response = await http.post(url,
-          body: json.encode({
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
             'title': product.title,
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId': userId,
             // 'isFavourite': product.isFavourite,
-          }));
+          },
+        ),
+      );
 
       final newProduct = Product(
         id: json.decode(response.body)['name'],
