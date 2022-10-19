@@ -39,9 +39,10 @@ class MyShop extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => Cart()),
         ChangeNotifierProxyProvider<Auth, Orders>(
-          create: (context) => Orders(orders: []),
+          create: (context) => Orders(orders: [], userId: '', authToken: ''),
           update: (context, auth, previous) => Orders(
             authToken: auth.token,
+            userId: auth.userId,
             orders: previous!.orders == null ? [] : previous.orders,
           ),
         ),
