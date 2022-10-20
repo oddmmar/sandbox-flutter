@@ -10,6 +10,7 @@ import 'package:section08/routes/product_detail_screen.dart';
 import 'package:section08/routes/products_overview_screen.dart';
 import 'package:section08/providers/products.dart';
 import 'package:provider/provider.dart';
+import 'package:section08/routes/splash_screen_dart.dart';
 import 'package:section08/routes/user_products.dart';
 
 void main() {
@@ -52,7 +53,12 @@ class MyShop extends StatelessWidget {
           theme: appTheme.copyWith(
             colorScheme: appTheme.colorScheme.copyWith(secondary: Colors.amberAccent),
           ),
-          home: auth.isAuth ? const ProductOverviewScreen() : const AuthScreen(),
+          home: auth.isAuth
+              ? const ProductOverviewScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting ? const SplashScreen() : const AuthScreen(),
+                ),
           // home: const EditProductScreen(),
           routes: {
             ProductOverviewScreen.routeName: ((context) => const ProductOverviewScreen()),
