@@ -43,7 +43,10 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             onPressed: () {
-              cart.addItem(productId: product.id!, price: product.price!, title: product.title!);
+              cart.addItem(
+                  productId: product.id!,
+                  price: product.price!,
+                  title: product.title!);
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -67,11 +70,17 @@ class ProductItem extends StatelessWidget {
         ),
         child: GestureDetector(
           onTap: (() {
-            Navigator.of(context).pushNamed(ProductDetailScreen.routeName, arguments: product.id);
+            Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                arguments: product.id);
           }),
-          child: Image.network(
-            product.imageUrl!,
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: product.id!,
+            child: FadeInImage(
+              placeholder:
+                  const AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl!),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
