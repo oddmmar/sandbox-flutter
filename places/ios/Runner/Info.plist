@@ -53,5 +53,9 @@
 		<string>App needs to take a picture</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>No need</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>App needs your location</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>App needs your location</string>
 	</dict>
 </plist>
