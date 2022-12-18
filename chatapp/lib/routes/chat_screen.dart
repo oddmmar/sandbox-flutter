@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,17 +8,37 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Chat'),
-      //   centerTitle: true,
-      // ),
+      appBar: AppBar(
+        title: const Text('Flutter Chat'),
+        actions: [
+          DropdownButton(
+            icon: const Icon(Icons.more_vert),
+            items: [
+              DropdownMenuItem(
+                value: 'logout',
+                child: SizedBox(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.logout),
+                      SizedBox(width: 8),
+                      Text('Logout'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+            onChanged: (itemId) {
+              if (itemId == 'logout') FirebaseAuth.instance.signOut();
+            },
+          ),
+        ],
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chats/iLeGDmg2ZxRJ8uwrHL4u/messages')
             .snapshots(),
         builder: (context, snapshot) {
           final documents = snapshot.data?.docs;
-          print(documents?.first);
           switch (snapshot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.waiting:
@@ -26,7 +46,7 @@ class ChatScreen extends StatelessWidget {
             case ConnectionState.done:
             case ConnectionState.active:
               if (documents == null) {
-                return Text('data');
+                return const Center(child: CircularProgressIndicator());
               }
               return ListView.builder(
                 itemCount: documents.length,
